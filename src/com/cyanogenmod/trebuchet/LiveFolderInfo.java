@@ -7,10 +7,7 @@ import org.cyanogenmod.support.ui.LiveFolder;
 
 import android.content.ComponentName;
 import android.content.ContentValues;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.text.TextUtils;
 
 /**
@@ -56,18 +53,8 @@ class LiveFolderInfo extends FolderInfo {
         itemsChanged();
     }
 
-    public boolean isOwner(Context ctx, String packageName) {
-        if (packageName.equals(receiver.getPackageName())) {
-            return true;
-        }
-        PackageManager packageManager = ctx.getPackageManager();
-        try {
-            int callingUid = packageManager.getApplicationInfo(packageName, 0).uid;
-            int ownerUid = packageManager.getApplicationInfo(receiver.getPackageName(), 0).uid;
-            return callingUid == ownerUid;
-        } catch (NameNotFoundException e) {
-            return false;
-        }
+    public boolean isOwner(String packageName) {
+        return packageName.equals(receiver.getPackageName());
     }
 
     public void populateWithItems(ArrayList<LiveFolder.Item> items) {
